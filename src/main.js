@@ -8,8 +8,13 @@ function WallView (opts) {
     ListView.call(this, opts);
     var self = this;
     setInterval(function () {
-        self.$el.isotope('reLayout');
+        //self.$el.isotope('reLayout');
     }, 1000);
+    this.on('insert', function (insertedContentView) {
+        this.$el.isotope('appended', insertedContentView.$el);
+        this.$el.isotope('reloadItems');
+        this.$el.isotope('reLayout');
+    });
 }
 WallView.prototype = new ListView();
 
@@ -27,11 +32,6 @@ WallView.prototype.getContentView = function (content) {
     CV.prototype.elClass += ' content-wall-item';
     return CV;
 };
-
-WallView.prototype._insertContentView = function (contentView) {
-    ListView.prototype._insertContentView.call(this, contentView);
-    this.$el.isotope('appended', contentView.$el);
-}
 
 exports = WallView;
 return exports;
